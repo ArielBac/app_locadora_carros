@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt', //para usar o jwt - seção 18 do curso
             'provider' => 'users',
             'hash' => false,
         ],

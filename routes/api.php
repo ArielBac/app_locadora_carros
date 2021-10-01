@@ -45,11 +45,18 @@ Route::get('/', function () {
  * portanto devemos usar a instrução apiResource. Podemos remover os métodos cretae e delete dos controladores
  */
 // Route::resource('cliente', 'App\Http\Controllers\ClienteController');
-Route::apiResource('cliente', 'App\Http\Controllers\ClienteController');
-Route::apiResource('carro', 'App\Http\Controllers\CarroController');
-Route::apiResource('locacao', 'App\Http\Controllers\LocacaoController');
-Route::apiResource('marca', 'App\Http\Controllers\MarcaController');
-Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
+//Na aula 331 foram implementados os middlewares de autenticação jwt
+Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - este prefixo indica a versão da api, caso seja feita uma atualização substancial, através desse versionamento é possivel que aplicações antigas que utilizem a api consigam continuar utilizando
+    Route::apiResource('cliente', 'App\Http\Controllers\ClienteController');
+    Route::apiResource('carro', 'App\Http\Controllers\CarroController');
+    Route::apiResource('locacao', 'App\Http\Controllers\LocacaoController');
+    Route::apiResource('marca', 'App\Http\Controllers\MarcaController');
+    Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
+
+    Route::post('me', 'App\Http\Controllers\AuthController@me'); // Aula 334 - a rota me precisa executar o meedleware jwt.auth
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh'); // Aula 335
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout'); // Aula 336
+});
 
 /**
  * Aula 289 - extra para corrigir o problema do namespace completo
@@ -57,6 +64,11 @@ Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
  * Para isso basta fazer um ajuste de configuração, indo em app/providers/RouteServiceProvider e descomentando a instrução
  * relacionada ao namespace
  */
+
+ //Aula 328 - autenticação em api
+ Route::post('login', 'App\Http\Controllers\AuthController@login');
+
+
 
 
 
