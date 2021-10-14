@@ -54,7 +54,6 @@ Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - es
     Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
 
     Route::post('me', 'App\Http\Controllers\AuthController@me'); // Aula 334 - a rota me precisa executar o meedleware jwt.auth
-    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh'); // Aula 335
     Route::post('logout', 'App\Http\Controllers\AuthController@logout'); // Aula 336
 });
 
@@ -67,6 +66,8 @@ Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - es
 
  //Aula 328 - autenticação em api
  Route::post('login', 'App\Http\Controllers\AuthController@login');
+
+ Route::post('refresh', 'App\Http\Controllers\AuthController@refresh'); // Aula 335
 
 
 

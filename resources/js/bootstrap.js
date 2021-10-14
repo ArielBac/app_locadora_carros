@@ -1,4 +1,19 @@
+const { default: axios } = require('axios');
+
 window._ = require('lodash');
+
+/**
+ * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+ * for JavaScript based Bootstrap features such as modals and tabs. This
+ * code may be modified to fit the specific needs of your application.
+ */
+
+try {
+    window.Popper = require('popper.js').default;
+    window.$ = window.jQuery = require('jquery');
+
+    require('bootstrap');
+} catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -26,3 +41,63 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+//Aula 386
+//Interceptar os requests da aplicação
+axios.interceptors.request.use(
+    config => {
+        //definir para todas as requisições os parâmetros de Accept e Authorization
+        config.headers['Accept'] = 'application/json'
+
+
+        //recuperando o token de autorização dos cookies
+        let token = document.cookie.split(';').find(indice => {
+            return indice.includes('token=')
+        })
+
+        //para pegar apenas o valor do token
+        token = token.split('=')[1]
+
+        token = 'Bearer ' + token
+
+        config.headers.Authorization = token
+
+        // console.log('Interceptando o request antes do envio', config)
+        return config
+    },
+    error => {
+        console.log('Erro na requisição', error)
+        return Promise.reject(error)
+    }
+)
+
+//Interceptar os responses da aplicação
+axios.interceptors.response.use(
+    response => {
+        console.log('Interceptando a resposta antes da aplicação', response)
+        return response
+    },
+    error => {
+        console.log('Erro na resposta', error.response)
+
+        //aula 388
+        if (error.response.status == 401 && error.response.data.message == 'Token has expired') {
+            console.log('nova req para refresh')
+
+            axios.post('http://localhost:8000/api/refresh')
+                .then(response => {
+                    console.log('refresh com sucesso')
+
+                    document.cookie = 'token=' + response.data.token + ';SameSite=Lax'
+
+                    console.log('Token atualizado: ', response.data.token)
+                    window.location.reload()
+                })
+                .catch(errors => {
+
+                })
+        }
+
+        return Promise.reject(error)
+    }
+)

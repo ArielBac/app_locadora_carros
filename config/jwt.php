@@ -120,7 +120,8 @@ return [
     |
     */
 
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+    //configurado no .env
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160), //determina, após um token ter expirado, quantos minutos apóis isso posso solicitar um token de autorização novo com base no que já foi experido (por padrão 2 semanas)
 
     /*
     |--------------------------------------------------------------------------

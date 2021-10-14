@@ -48,7 +48,7 @@ class MarcaController extends Controller
             $marcaRepository->selectAtributos($request->atributos);
         }
 
-        return response()->json($marcaRepository->getResultado(), 200);
+        return response()->json($marcaRepository->getResultadoPaginado(3), 200);
         //Fim Aula 318
 
         //------------------------------------------------------------------
@@ -186,11 +186,23 @@ class MarcaController extends Controller
             $request->validate($marca->rules(), $marca->feedback());
         }
 
-        //Aula 307 - remove um arquivo atigo caso um novo arquivo tenha sido enviado no request
+        //preenchendo o objeto marca com todos os dados do request
+        $marca->fill($request->all());
+
+        //se a imagem foi enchaminhada na requisição
         if ($request->file('imagem')) {
+            //remove um arquivo atigo caso um novo arquivo tenha sido enviado no request
             Storage::disk('public')->delete($marca->imagem);
+
+            $imagem = $request->file('imagem');
+            $imagem_urn = $imagem->store('imagens', 'public');
+            $marca->imagem = $imagem_urn;
         }
 
+        $marca->save();
+        return response()->json($marca, 200);
+
+        /* Esse formato funciona bem se for uma atualização do tipo put, porém com o patch não, por isso há uma correção deste trecho, acima, na aula 383
         $imagem = $request->imagem;
         // $imagem->store('path', 'local');
         $imagem_urn = $imagem->store('imagens', 'public');
@@ -209,7 +221,7 @@ class MarcaController extends Controller
         //Aula 306, o tipo form-data, utilizado para requisições com imagens, só é reconhecido através do método post
         //é preciso passar um parâmetro adicional na requisição (_method) utilizando o método post
 
-        return response()->json($marca, 200);
+        // return response()->json($marca, 200);
     }
 
     /**
