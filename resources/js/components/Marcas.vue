@@ -158,7 +158,7 @@
                     <img :src="'storage/' + $store.state.item.imagem" v-if="$store.state.item.imagem">
                 </input-container-component>
                 <input-container-component titulo="Data de criação">
-                    <input type="text" class="form-control" :value="$store.state.item.created_at" disabled>
+                    <input type="text" class="form-control" :value="$store.state.item.created_at | formataDataHoraGlobal" disabled>
                 </input-container-component>
             </template>
 
@@ -392,7 +392,7 @@
                 this.arquivoImagem = e.target.files
             },
             salvar() {
-                console.log(this.nomeMarca, this.arquivoImagem[0])
+                // console.log(this.nomeMarca, this.arquivoImagem[0])
 
                 let formData = new FormData(); //formulaŕio para que seja possível definir seus atributos
                 formData.append('nome', this.nomeMarca)

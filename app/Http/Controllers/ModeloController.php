@@ -24,6 +24,7 @@ class ModeloController extends Controller
         //Inicio Aula 319
         $modeloRepository = new ModeloRepository($this->modelo);
 
+
         if ($request->has('atributos_marca')) {
             $atributos_marca = 'marca:id,'.$request->atributos_marca;
             $modeloRepository->selectAtributosRegistrosRelacionados($atributos_marca);
@@ -39,7 +40,7 @@ class ModeloController extends Controller
             $modeloRepository->selectAtributos($request->atributos);
         }
 
-        return response()->json($modeloRepository->getResultado(), 200);
+        return response()->json($modeloRepository->getResultadoPaginado(3), 200);
         //Fim Aula 319
 
 
@@ -153,16 +154,17 @@ class ModeloController extends Controller
             $request->validate($modelo->rules());
         }
 
+         //Aula 311 - preencher o objeto modelo com os dados so request
+         $modelo->fill($request->all()); //o fill recebe um array, pega os parametros desse array e sobrescreve o objeto, no caso, $modelo
+
         if ($request->file('imagem')) {
             Storage::disk('public')->delete($modelo->imagem);
+
+            $imagem = $request->imagem;
+            $imagem_urn = $imagem->store('imagens/modelos', 'public');
+            $modelo->imagem = $imagem_urn;
         }
 
-        $imagem = $request->imagem;
-        $imagem_urn = $imagem->store('imagens/modelos', 'public');
-
-        //Aula 311 - preencher o objeto modelo com os dados so request
-        $modelo->fill($request->all()); //o fill recebe um array, pega os parametros desse array e sobrescreve o objeto, no caso, $modelo
-        $modelo->imagem = $imagem_urn;
         $modelo->save();
 
         /*
