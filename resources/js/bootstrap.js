@@ -72,32 +72,32 @@ axios.interceptors.request.use(
 )
 
 //Interceptar os responses da aplicação
-axios.interceptors.response.use(
-    response => {
-        // console.log('Interceptando a resposta antes da aplicação', response)
-        return response
-    },
-    error => {
-        console.log('Erro na resposta', error.response)
+// axios.interceptors.response.use(
+//     response => {
+//         // console.log('Interceptando a resposta antes da aplicação', response)
+//         return response
+//     },
+//     error => {
+//         console.log('Erro na resposta', error.response)
 
-        //aula 388
-        if (error.response.status == 401 && error.response.data.message == 'Token has expired') {
-            // console.log('nova req para refresh')
+//         //aula 388
+//         if (error.response.status == 401 && error.response.data.message == 'Token has expired') {
+//             // console.log('nova req para refresh')
 
-            axios.post('http://localhost:8000/api/refresh')
-                .then(response => {
-                    // console.log('refresh com sucesso')
+//             axios.post('http://localhost:8000/api/refresh')
+//                 .then(response => {
+//                     // console.log('refresh com sucesso')
 
-                    document.cookie = 'token=' + response.data.token + ';SameSite=Lax'
+//                     document.cookie = 'token=' + response.data.token + ';SameSite=Lax'
 
-                    console.log('Token atualizado: ', response.data.token)
-                    window.location.reload()
-                })
-                .catch(errors => {
+//                     console.log('Token atualizado: ', response.data.token)
+//                     window.location.reload()
+//                 })
+//                 .catch(errors => {
 
-                })
-        }
+//                 })
+//         }
 
-        return Promise.reject(error)
-    }
-)
+//         return Promise.reject(error)
+//     }
+// )

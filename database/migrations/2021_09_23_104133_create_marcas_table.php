@@ -17,6 +17,8 @@ class CreateMarcasTable extends Migration
             $table->id();
             $table->string('nome', 30)->unique();
             $table->string('imagem', 100)->comment('Logo da marca');
+            //A imagem deve ser obrigatória, porém coloquei null nos campos para teste no servidor
+            //$table->string('imagem', 100)->comment('Logo da marca')->nullable();
             $table->timestamps();
         });
     }
