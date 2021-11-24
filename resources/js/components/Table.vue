@@ -13,6 +13,7 @@
                         <span v-if="titulos[chaveValor].tipo == 'texto'">{{ valor }}</span>
 
                         <span v-if="titulos[chaveValor].tipo == 'marca' && valor !== null">{{ valor.nome }}</span><!-- A segunda condição do v-if verifica se existe uma marca associada a o determinado modelo-->
+                        <span v-if="titulos[chaveValor].tipo == 'modelo' && valor !== null">{{ valor.nome }}</span><!-- A segunda condição do v-if verifica se existe um modelo associada a o determinado modelo-->
 
                         <span v-if="titulos[chaveValor].tipo == 'data'">{{ valor | formataDataHoraGlobal }}</span> <!-- lógica de formatação feita na aula 385 -->
                         <span v-if="titulos[chaveValor].tipo == 'imagem'">
