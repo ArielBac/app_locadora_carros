@@ -2,7 +2,6 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <!-- Aula 351 -->
                 <!-- Inicio card busca marcas -->
                 <card-component titulo="Busca de marcas">
                     <template v-slot:conteudo>
@@ -27,7 +26,6 @@
                 <!-- Fim card busca marcas -->
 
                 <!-- Inicio card listagem marcas -->
-                <!-- o marcas.data é explicado na aula 367, sobre paginação --> <!-- parte da aula 373 -->
                 <card-component titulo="Relação de marcas">
                     <template v-slot:conteudo>
                         <table-component
@@ -66,50 +64,6 @@
                     </template>
                 </card-component>
                 <!-- Fim card listagem marcas -->
-                <!-- Fim Aula 351 -->
-
-                <!-- Aula 348 - Card de busca-->
-                <!--
-                <div class="card mb-3">
-                    <div class="card-header">Busca de marcas</div>
-
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="col mb-3">
-                                <input-container-component titulo="ID" id="inputId" id-help="idHelp" texto-ajuda="Opcional. Informe o ID da marca">
-                                    <input type="number" class="form-control" id="inputId" aria-describedby="idHelp" placeholder="ID">
-                                </input-container-component>
-                            </div>
-                            <div class="col mb-3">
-                                <input-container-component titulo="Nome da marca" id="inputNome" id-help="nomeHelp" texto-ajuda="Opcional. Informe o nome da marca">
-                                    <input type="text" class="form-control" id="inputNome" aria-describedby="nomeHelp" placeholder="Nome da marca">
-                                </input-container-component>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary btn-sm float-right">Pesquisar</button>
-                    </div>
-                </div>
-                -->
-                <!-- Fim Aula 348 -->
-
-                <!-- Aula 349 - Card de listagem de marcas -->
-                <!--
-                <div class="card">
-                    <div class="card-header">Relação de marcas</div>
-
-                    <div class="card-body">
-                        <div class="form-row">
-                            <table-component></table-component>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-primary btn-sm float-right">Adicionar</button>
-                    </div>
-                </div>
-                -->
-                <!-- Fim Aula 349 -->
             </div>
         </div>
 
@@ -223,32 +177,17 @@
 
 <script>
     export default {
-        // computed: { //lógica modificada na aula 387
-        //     token() {
-        //         //Separa o que vem de document.cookie por ';', procura no array rersultante do split o indice o qual seu conteudo começa com 'token='
-        //         let token = document.cookie.split(';').find(indice => {
-        //             return indice.includes('token=')
-        //         })
-
-        //         //para pegar apenas o valor do token
-        //         token = token.split('=')[1]
-
-        //         token = 'Bearer ' + token
-
-        //         return token
-        //     }
-        // },
         data() {
             return {
                 urlBase: 'http://localhost:8000/api/v1/marca',
-                urlPaginacao: '', //Aula 372
-                urlFiltro: '', //Aula 372
+                urlPaginacao: '',
+                urlFiltro: '',
                 nomeMarca: '',
                 arquivoImagem: [],
                 transacaoStatus: '',
                 transacaoDetalhes: {},
-                marcas: { data: [] }, // Feito na aula 368 para correção de um erro
-                busca: { id: '', nome: '' }, //Aula 371
+                marcas: { data: [] },
+                busca: { id: '', nome: '' },
             }
         },
         methods: {
@@ -271,9 +210,6 @@
                 let config = {
                     headers: {
                         'Content-Type': 'multpart/form-data',
-                        //na aula 387, essa config passa a ser feita de mofo global, para evitar repetição de código
-                        // 'Accept': 'application/json',
-                        // 'Authorization': this.token
                     }
                 }
 
@@ -304,14 +240,6 @@
                 let formData = new FormData()
                 formData.append('_method', 'delete')
 
-                //na aula 387, essa config passa a ser feita de mofo global, para evitar repetição de código
-                // let config = {
-                //     headers: {
-                //         'Accept': 'application/json',
-                //         'Authorization': this.token
-                //     }
-                // }
-
                 axios.post(url, formData)
                     .then(response => {
                         this.$store.state.transacao.status = 'sucesso'
@@ -325,12 +253,9 @@
                     })
             },
             pesquisar() { //Aula 371 e 372
-                // console.log(this.busca)
-
                 let filtro = ''
 
                 for (let chave in this.busca) {
-                    // console.log(chave, this.busca[chave])
 
                     if (this.busca[chave]) {
                         if (filtro != '') {
@@ -353,35 +278,20 @@
             //Aula 370
             paginacao(l) {
                 if (l.url) {
-                    //this.urlBase = l.url //Ajusatando a url com o parametro de pagina
-
                     this.urlPaginacao = l.url.split('?')[1] // Aula 372
 
-                    this.carregarLista() //requisitando novamente os dados para a nossa API
+                    this.carregarLista()
                 }
             },
             //Fim aula 370
 
             // Aula 362 - listagem de marcas
             carregarLista() {
-
                 let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro // Aula 372
-                // console.log(url)
-
-                //Aula 363
-                //na aula 387, essa config passa a ser feita de mofo global, para evitar repetição de código
-                // let config = {
-                //     headers: {
-                //         'Accept': 'application/json',
-                //         'Authorization': this.token
-                //     }
-                // }
-                //Fima aula 363
 
                 axios.get(url)
                     .then(response => {
                         this.marcas = response.data
-                        // console.log(this.marcas)
                     })
                     .catch(errors => {
                         console.log(errors)
@@ -392,23 +302,16 @@
                 this.arquivoImagem = e.target.files
             },
             salvar() {
-                // console.log(this.nomeMarca, this.arquivoImagem[0])
-
-                let formData = new FormData(); //formulaŕio para que seja possível definir seus atributos
+                let formData = new FormData();
                 formData.append('nome', this.nomeMarca)
-                formData.append('imagem', this.arquivoImagem[0]) //posição 0 pois estamos trabalhando com apenas um imagem
+                formData.append('imagem', this.arquivoImagem[0])
 
                 let config = {
                     headers: {
                         'Content-Type': 'multpart/form-data',
-                        //na aula 387, essa config passa a ser feita de mofo global, para evitar repetição de código
-                        // 'Accept': 'application/json',
-                        // Aula 357, para garantir que não haverá problema de aurotização, relacionados ao token que deve ser encaminhado para o back-end
-                        // 'Authorization': this.token
                     }
                 }
 
-                // axios.post(<url>, <conteudo>, <config>)
                 axios.post(this.urlBase, formData, config)
                     .then(response => {
                         this.transacaoStatus = 'adicionado'
@@ -423,12 +326,11 @@
                             mensagem: errors.response.data.message,
                             dados: errors.response.data.errors
                         }
-                        // errors.response.data.message
                     })
             }
         },
-        mounted() { // quando o componente for carregado
-            this.carregarLista() //executa esse método
+        mounted() {
+            this.carregarLista()
         }
     }
 </script>
