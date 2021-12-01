@@ -92,6 +92,15 @@ class MarcaController extends Controller
     }
 
     /**
+     * Método para retornar todas as marcas para serem utilizadas no select do modelos
+     * @return \Illuminate\Http\Response
+     */
+    public function getAll(Request $request) {
+        $marcaRepository = new MarcaRepository($this->marca);
+        return response()->json($marcaRepository->getResultado(), 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

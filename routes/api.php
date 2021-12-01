@@ -53,6 +53,8 @@ Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - es
     Route::apiResource('marca', 'App\Http\Controllers\MarcaController');
     Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
 
+    Route::get('marcas', 'App\Http\Controllers\MarcaController@getAll'); //Busca todas as marcas para serem usadas no select de marcas
+
     Route::post('me', 'App\Http\Controllers\AuthController@me'); // Aula 334 - a rota me precisa executar o meedleware jwt.auth
     Route::post('logout', 'App\Http\Controllers\AuthController@logout'); // Aula 336
 });
