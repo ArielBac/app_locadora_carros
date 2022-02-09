@@ -24,7 +24,7 @@ class CarroController extends Controller
         $carroRepository = new CarroRepository($this->carro);
 
         if ($request->has('atributos_modelo')) {
-            $atributos_modelo = 'modelos:id,'.$request->atributos_modelo;
+            $atributos_modelo = 'modelos:id,' . $request->atributos_modelo;
             $carroRepository->selectAtributosRegistrosRelacionados($atributos_modelo);
         } else {
             $carroRepository->selectAtributosRegistrosRelacionados('modelo');

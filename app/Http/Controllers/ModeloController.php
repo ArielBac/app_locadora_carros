@@ -26,7 +26,7 @@ class ModeloController extends Controller
 
 
         if ($request->has('atributos_marca')) {
-            $atributos_marca = 'marca:id,'.$request->atributos_marca;
+            $atributos_marca = 'marca:id,' . $request->atributos_marca;
             $modeloRepository->selectAtributosRegistrosRelacionados($atributos_marca);
         } else {
             $modeloRepository->selectAtributosRegistrosRelacionados('marca');
@@ -80,6 +80,16 @@ class ModeloController extends Controller
         //get() -> modificar a consulta (with()) -> collection
 
         */
+    }
+
+    /**
+     * Método para retornar todos os modelos para serem utilizados no select do modelos
+     * @return \Illuminate\Http\Response
+     */
+    public function getAll(Request $request)
+    {
+        $modeloRepository = new ModeloRepository($this->modelo);
+        return response()->json($modeloRepository->getResultado(), 200);
     }
 
     /**
@@ -154,8 +164,8 @@ class ModeloController extends Controller
             $request->validate($modelo->rules());
         }
 
-         //Aula 311 - preencher o objeto modelo com os dados so request
-         $modelo->fill($request->all()); //o fill recebe um array, pega os parametros desse array e sobrescreve o objeto, no caso, $modelo
+        //Aula 311 - preencher o objeto modelo com os dados so request
+        $modelo->fill($request->all()); //o fill recebe um array, pega os parametros desse array e sobrescreve o objeto, no caso, $modelo
 
         if ($request->file('imagem')) {
             Storage::disk('public')->delete($modelo->imagem);

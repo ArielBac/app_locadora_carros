@@ -23,7 +23,8 @@ class Locacao extends Model
     ];
 
     //Aula 321
-    public function rules() {
+    public function rules()
+    {
         return [];
     }
 }

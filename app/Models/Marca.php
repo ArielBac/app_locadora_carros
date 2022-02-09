@@ -11,9 +11,10 @@ class Marca extends Model
     protected $fillable = ['nome', 'imagem'];
 
     //Aula 299 - refatoração das regras de validação
-    public function rules() {
+    public function rules()
+    {
         return [
-            'nome' => 'required|unique:marcas,nome,'.$this->id.'|min:3',
+            'nome' => 'required|unique:marcas,nome,' . $this->id . '|min:3',
             'imagem' => 'required|file|mimes:png,jpeg'
         ];
     }
@@ -25,7 +26,8 @@ class Marca extends Model
      * 3) id do registro que será desconsiderado na pesquisa
      */
 
-    public function feedback() {
+    public function feedback()
+    {
         return [
             'required' => 'O campo :attribute é obrigatório',
             'nome.unique' => 'O nome da marca já existe',
@@ -34,7 +36,8 @@ class Marca extends Model
         ];
     }
 
-    public function modelos() {
+    public function modelos()
+    {
         //Uma marca tem muitos modelos
         return $this->hasMany('App\Models\Modelo');
     }

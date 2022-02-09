@@ -11,7 +11,8 @@ class Cliente extends Model
     protected $fillable = ['nome'];
 
     //Aula 321
-    public function rules() {
+    public function rules()
+    {
         return [
             'nome' => 'required',
         ];

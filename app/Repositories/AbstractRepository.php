@@ -11,12 +11,14 @@ abstract class AbstractRepository
         $this->model = $model;
     }
 
-    public function selectAtributosRegistrosRelacionados($atributos) {
+    public function selectAtributosRegistrosRelacionados($atributos)
+    {
         $this->model = $this->model->with($atributos);
         //a query está sendo montada
     }
 
-    public function filtro($filtros) {
+    public function filtro($filtros)
+    {
         $filtros = explode(';', $filtros);
 
         foreach ($filtros as $key => $condicao) {
@@ -26,15 +28,18 @@ abstract class AbstractRepository
         }
     }
 
-    public function selectAtributos($atributos) {
+    public function selectAtributos($atributos)
+    {
         $this->model = $this->model->selectRaw($atributos);
     }
 
-    public function getResultado() {
+    public function getResultado()
+    {
         return $this->model->get();
     }
 
-    public function getResultadoPaginado($numeroRegistroPorPagina) {
+    public function getResultadoPaginado($numeroRegistroPorPagina)
+    {
         return $this->model->paginate($numeroRegistroPorPagina);
     }
 }

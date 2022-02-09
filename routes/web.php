@@ -14,21 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/marcas', function() {
+Route::get('/marcas', function () {
     return view('app.marcas');
 })->name('marcas')->middleware('auth');
 
-Route::get('/carros', function() {
+Route::get('/carros', function () {
     return view('app.carros');
 })->name('carros')->middleware('auth');
 
-Route::get('/modelos', function() {
+Route::get('/modelos', function () {
     return view('app.modelos');
 })->name('modelos')->middleware('auth');

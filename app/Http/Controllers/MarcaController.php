@@ -34,7 +34,7 @@ class MarcaController extends Controller
         $marcaRepository = new MarcaRepository($this->marca);
 
         if ($request->has('atributos_modelos')) {
-            $atributos_modelos = 'modelos:id,'.$request->atributos_modelos;
+            $atributos_modelos = 'modelos:id,' . $request->atributos_modelos;
             $marcaRepository->selectAtributosRegistrosRelacionados($atributos_modelos);
         } else {
             $marcaRepository->selectAtributosRegistrosRelacionados('modelos');
@@ -95,7 +95,8 @@ class MarcaController extends Controller
      * Método para retornar todas as marcas para serem utilizadas no select do modelos
      * @return \Illuminate\Http\Response
      */
-    public function getAll(Request $request) {
+    public function getAll(Request $request)
+    {
         $marcaRepository = new MarcaRepository($this->marca);
         return response()->json($marcaRepository->getResultado(), 200);
     }

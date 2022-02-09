@@ -11,7 +11,8 @@ class Carro extends Model
     protected $fillable = ['modelo_id', 'placa', 'disponivel', 'km'];
 
     //Aula 321
-    public function rules() {
+    public function rules()
+    {
         return [
             'modelo_id' => 'exists:modelos,id',
             'placa' => 'required',
@@ -20,7 +21,8 @@ class Carro extends Model
         ];
     }
 
-    public function modelo() {
+    public function modelo()
+    {
         return $this->belongsTo('App\Models\Modelo');
     }
 }

@@ -46,7 +46,7 @@ Route::get('/', function () {
  */
 // Route::resource('cliente', 'App\Http\Controllers\ClienteController');
 //Na aula 331 foram implementados os middlewares de autenticação jwt
-Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - este prefixo indica a versão da api, caso seja feita uma atualização substancial, através desse versionamento é possivel que aplicações antigas que utilizem a api consigam continuar utilizando
+Route::prefix('v1')->middleware('jwt.auth')->group(function () { //Aula 332 - este prefixo indica a versão da api, caso seja feita uma atualização substancial, através desse versionamento é possivel que aplicações antigas que utilizem a api consigam continuar utilizando
     Route::apiResource('cliente', 'App\Http\Controllers\ClienteController');
     Route::apiResource('carro', 'App\Http\Controllers\CarroController');
     Route::apiResource('locacao', 'App\Http\Controllers\LocacaoController');
@@ -54,6 +54,8 @@ Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - es
     Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
 
     Route::get('marcas', 'App\Http\Controllers\MarcaController@getAll'); //Busca todas as marcas para serem usadas no select de marcas
+
+    Route::get('modelos', 'App\Http\Controllers\ModeloController@getAll'); //Busca todas as modelos para serem usadas no select de modelos
 
     Route::post('me', 'App\Http\Controllers\AuthController@me'); // Aula 334 - a rota me precisa executar o meedleware jwt.auth
     Route::post('logout', 'App\Http\Controllers\AuthController@logout'); // Aula 336
@@ -66,12 +68,7 @@ Route::prefix('v1')->middleware('jwt.auth')->group( function() { //Aula 332 - es
  * relacionada ao namespace
  */
 
- //Aula 328 - autenticação em api
- Route::post('login', 'App\Http\Controllers\AuthController@login');
+//Aula 328 - autenticação em api
+Route::post('login', 'App\Http\Controllers\AuthController@login');
 
- Route::post('refresh', 'App\Http\Controllers\AuthController@refresh'); // Aula 335
-
-
-
-
-
+Route::post('refresh', 'App\Http\Controllers\AuthController@refresh'); // Aula 335
